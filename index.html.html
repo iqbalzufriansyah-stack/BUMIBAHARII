@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BUMIBAHARI — Pasar Lokal Semarang</title>
+<style>
+
+:root{--bg-light:#f7f8f3;--bg-dark:#17211d;--text-light:#24332b;--text-dark:#edf4ed;--accent:#237a50;--accent-hover:#185d3b;--card-bg-light:#fff;--card-bg-dark:#26352d;--muted:#718078;--line:#e5eae3;--transition:.25s ease}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg-light);color:var(--text-light);transition:background var(--transition),color var(--transition)}
+button{cursor:pointer;font:inherit}
+header{height:72px;display:flex;justify-content:space-between;align-items:center;padding:0 max(5vw,20px);background:#fff;color:#1d3829;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--line);box-shadow:0 2px 12px #17351d0a}
+header h1{font-size:1.25rem;font-weight:850;letter-spacing:-.04em;color:#237a50}
+header h1:before{content:"🌱";margin-right:9px}
+.header-actions{display:flex;gap:9px;align-items:center}
+.header-actions button{padding:10px 15px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#245239;font-weight:650}
+.header-actions button:last-child{background:#237a50;color:white;border-color:#237a50}
+#quickAddProductBtn{display:none;align-items:center;gap:7px;background:#eaf5ed;color:#237a50;border:1px solid #b9d8c1;font-weight:750}
+#quickAddProductBtn .plus-icon{font-size:1.25rem;line-height:1}
+@media(max-width:480px){#quickAddProductBtn{padding:9px 11px;font-size:.82rem}.header-actions{gap:6px}.header-actions button{padding:9px 11px}}
+.hero{margin:24px auto 0;width:min(1180px,92%);min-height:270px;border-radius:24px;padding:38px 42px;display:flex;align-items:center;justify-content:space-between;gap:24px;overflow:hidden;color:white;background:linear-gradient(105deg,#123f2c 0%,#237a50 58%,#73a76d 100%);position:relative}
+.hero:after{content:"🌾 🐟 🥬";font-size:clamp(3rem,7vw,6rem);opacity:.92;letter-spacing:-.25em;margin-right:28px;filter:drop-shadow(0 10px 12px #12351d55)}
+.hero-copy{max-width:650px;position:relative;z-index:1}
+.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;font-weight:800;color:#d8f2d9;margin-bottom:12px}
+.hero h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.08;letter-spacing:-.045em;margin-bottom:13px}
+.hero p{font-size:1rem;line-height:1.65;color:#e6f3e8;max-width:570px}
+.hero .hero-tag{display:inline-block;margin-top:20px;padding:10px 16px;border-radius:999px;background:#ffffff1e;border:1px solid #ffffff55;font-size:.85rem;font-weight:700}
+.benefits{width:min(1180px,92%);margin:18px auto 30px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.benefit{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:flex;align-items:center;gap:12px}
+.benefit b{display:block;font-size:.92rem}.benefit span{font-size:.78rem;color:var(--muted)}
+.market-wrap{width:min(1180px,92%);margin:0 auto}
+.market-heading{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:16px}
+.market-heading h2{font-size:1.6rem;letter-spacing:-.035em}
+.market-heading p{color:var(--muted);font-size:.9rem;margin-top:4px}
+.top-controls{padding:0;margin:0 0 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search-bar{flex:1;min-width:230px}
+.search-bar input{width:100%;padding:13px 16px;border-radius:12px;border:1px solid #dce4da;background:#fff;font-size:.95rem;outline:none}
+.search-bar input:focus{border-color:#237a50;box-shadow:0 0 0 3px #237a5018}
+.categories{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.categories button{padding:10px 15px;border-radius:999px;border:1px solid #dce4da;background:#fff;color:#42574a;font-size:.86rem;font-weight:650}
+.categories button.active,.categories button:hover{background:#237a50;color:#fff;border-color:#237a50}
+#products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding:0 0 46px}
+.card{background:var(--card-bg-light);border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 5px 18px #203d2410;transition:transform var(--transition),box-shadow var(--transition),opacity var(--transition);opacity:0;transform:translateY(12px)}
+.card.show{opacity:1;transform:translateY(0)}.card:hover{transform:translateY(-5px);box-shadow:0 12px 28px #203d241b}
+.card img{width:100%;height:185px;object-fit:cover;background:#eaf0e7}
+.card-content{padding:15px}
+.card-content h3{margin:3px 0 7px;font-size:1rem;letter-spacing:-.02em}
+.card-content p{font-size:.84rem;line-height:1.5;margin-bottom:12px;color:#718078;min-height:38px}
+.card-content .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:13px}
+.card-content span.price{font-weight:850;color:#237a50;font-size:1rem}
+.card-content .note{background:#eef6ed;color:#32734a;padding:5px 8px;border-radius:999px;font-size:.7rem}
+.card-buttons{display:flex;gap:7px}
+.card-buttons button{flex:1;padding:9px 7px;border-radius:9px;border:1px solid #237a50;background:#237a50;color:#fff;font-size:.78rem;font-weight:700}
+.card-buttons .fav{flex:0 0 38px;background:#fff;color:#237a50;border-color:#dce4da;font-size:1rem}
+.card-buttons .buy{background:#fff;color:#237a50}
+.note{font-size:.9rem;color:var(--muted)}
+#cart{position:fixed;top:82px;right:20px;background:var(--card-bg-light);border:1px solid var(--line);border-radius:16px;padding:18px;width:320px;max-height:65vh;overflow-y:auto;box-shadow:0 12px 40px #102b1b25;display:none;z-index:120}
+#cart h3{margin-bottom:12px}.cart-item{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;align-items:center}
+#checkoutOverlay,#profileOverlay{position:fixed;inset:0;background:#0c1e14a8;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;z-index:200;padding:15px}
+#checkoutOverlay.active,#profileOverlay.active{opacity:1;pointer-events:auto}
+.checkout-content,.profile-panel{background:var(--card-bg-light);color:var(--text-light);padding:25px;border-radius:18px;min-width:320px;width:min(820px,96vw);max-height:90vh;overflow:auto;position:relative;box-shadow:0 20px 70px #07180e55}
+.checkout-content{max-width:520px}.close,.profile-close{position:absolute;top:13px;right:17px;cursor:pointer;font-size:1.5rem}
+.checkout-step{display:none}.checkout-step.active{display:block}
+.payment-methods,.provider-list{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.payment-methods button,.provider-list button,.profile-tabs button{padding:10px 14px;border-radius:9px;border:1px solid #dce4da;background:#f6f8f4;color:#34513e}
+.payment-methods button.active,.provider-list button.active,.profile-tabs button.active{background:#237a50;color:#fff;border-color:#237a50}
+.checkout-content h2,.profile-panel h2{margin-bottom:17px}
+.checkout-content input,.profile-panel input,.profile-panel textarea,.profile-panel select{width:100%;padding:11px 12px;border-radius:9px;border:1px solid #dce4da;margin:5px 0;font:inherit}
+.checkout-content button:not(.payment-methods button):not(.provider-list button),.profile-panel button{padding:10px 15px;border-radius:9px;border:0;background:#237a50;color:#fff;font-weight:700}
+.profile-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}\n#newProdPhoto{background:#f8faf7;padding:10px;border:1px dashed #9bb7a0;border-radius:10px}
+.form-row{display:flex;gap:9px;margin-bottom:8px}.form-row>*{min-width:0;flex:1}
+.avatar-preview{width:84px;height:84px;border-radius:50%;object-fit:cover;border:1px solid #ddd}
+.shop-list,.history-list{display:grid;gap:10px}.shop-card,.history-item{border:1px solid var(--line);padding:13px;border-radius:10px;background:#fbfcfa}
+.history-item{display:flex;justify-content:space-between;gap:12px;align-items:center}.history-item .left{max-width:70%}.qty-control{display:flex;align-items:center;gap:6px;margin:0 0 10px}.qty-control input{width:66px;padding:7px;border:1px solid #dce4da;border-radius:8px}.tracking-status{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef6ed;color:#286a43;font-size:.78rem;font-weight:700}.shipping-box{margin:14px 0;padding:12px;border:1px solid #dce4da;border-radius:12px}.shipping-box select{width:100%;padding:10px;border:1px solid #dce4da;border-radius:8px;margin-top:6px;font:inherit}
+body.dark{background:var(--bg-dark);color:var(--text-dark)}
+body.dark header,body.dark .benefit,body.dark .card,body.dark #cart{background:var(--card-bg-dark);color:var(--text-dark);border-color:#3b5145}
+body.dark .search-bar input,body.dark .categories button,body.dark .header-actions button{background:#26352d;color:#edf4ed;border-color:#405448}
+body.dark .market-heading p,body.dark .benefit span{color:#b4c5b8}
+body.dark .profile-panel,body.dark .checkout-content{background:var(--card-bg-dark);color:var(--text-dark)}
+body.dark .shop-card,body.dark .history-item{background:#1f2c25;border-color:#405448}
+@media(max-width:900px){#products{grid-template-columns:repeat(3,minmax(0,1fr))}.hero:after{font-size:3.5rem;margin-right:8px}}
+@media(max-width:650px){header{padding:0 4%;height:64px}.hero{width:92%;padding:27px 23px;min-height:250px}.hero:after{display:none}.benefits{grid-template-columns:1fr;width:92%}.market-wrap{width:92%}#products{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card img{height:140px}.card-content{padding:11px}.card-buttons button{font-size:.7rem;padding:8px 4px}.market-heading{align-items:start;flex-direction:column}.form-row{flex-direction:column}.profile-panel{min-width:0;padding:20px 15px}}
+@media(max-width:390px){#products{grid-template-columns:1fr}.card img{height:190px}}
+
+
+/* Take-away & chat prototype */
+.fulfillment-box{margin:14px 0;padding:13px;border:1px solid #dce4da;border-radius:12px}
+.fulfillment-options{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}
+.fulfillment-options label{display:flex;align-items:center;gap:7px;border:1px solid #dce4da;border-radius:10px;padding:10px 12px;background:#f8faf7;cursor:pointer}
+.fulfillment-options input{width:auto;margin:0}
+#pickupFields{display:none;margin-top:10px}
+#pickupFields input{width:100%;padding:11px;border:1px solid #dce4da;border-radius:9px;margin:5px 0;font:inherit}
+.chat-layout{display:grid;grid-template-columns:minmax(170px, .8fr) 1.5fr;gap:12px;min-height:380px}
+.chat-users,.chat-window{border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0;background:#fff}
+.chat-users{max-height:420px;overflow:auto}
+.chat-user{display:block;width:100%;text-align:left;padding:10px;border:0;border-radius:9px;background:#f5f8f4;color:#294535;margin:4px 0}
+.chat-user.active{background:#237a50;color:#fff}
+.chat-window{display:flex;flex-direction:column;min-height:380px}
+#chatMessages{flex:1;overflow:auto;max-height:310px;padding:8px;background:#f8faf7;border-radius:9px}
+.chat-bubble{max-width:85%;padding:9px 11px;border-radius:12px;margin:7px 0;background:#e9f1e9;overflow-wrap:anywhere}
+.chat-bubble.mine{margin-left:auto;background:#d9f0df}
+.chat-bubble small{display:block;color:#68786d;font-size:.7rem;margin-top:4px}
+.chat-compose{display:flex;gap:7px;margin-top:9px}
+.chat-compose input{flex:1;min-width:0;padding:10px;border:1px solid #dce4da;border-radius:9px;font:inherit}
+.chat-compose button{padding:10px 13px;border:0;border-radius:9px;background:#237a50;color:white;font-weight:700}
+body.dark .chat-users,body.dark .chat-window{background:#26352d;color:#edf4ed;border-color:#405448}
+body.dark .chat-user{background:#1f2c25;color:#edf4ed}
+body.dark .chat-user.active{background:#237a50}
+body.dark #chatMessages{background:#1f2c25}
+body.dark .fulfillment-options label{background:#1f2c25;color:#edf4ed;border-color:#405448}
+@media(max-width:600px){.chat-layout{grid-template-columns:1fr}.chat-users{max-height:145px}.chat-window{min-height:330px}}
+
+
+/* Motion polish: animated buttons, lifted cards, and shimmer loading */
+button{
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease,border-color .2s ease,filter .2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.04);
+  box-shadow:0 6px 16px #17351d20;
+}
+button:active{
+  transform:translateY(1px) scale(.97);
+  box-shadow:none;
+}
+button:focus-visible{
+  outline:3px solid #83c99a;
+  outline-offset:3px;
+}
+button::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(110deg,transparent 20%,#ffffff55 48%,transparent 76%);
+  transform:translateX(-130%);
+  transition:transform .55s ease;
+  pointer-events:none;
+}
+button:hover::after{transform:translateX(130%)}
+.card{
+  transform:translateY(12px) scale(.985);
+  will-change:transform,box-shadow;
+  transition:transform .32s cubic-bezier(.2,.75,.25,1),box-shadow .32s ease,opacity .32s ease,border-color .32s ease;
+}
+.card.show{transform:translateY(0) scale(1)}
+.card:hover{
+  transform:translateY(-8px) scale(1.015);
+  box-shadow:0 18px 38px #17351d25;
+  border-color:#b8d7bd;
+}
+.card img{
+  transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s ease;
+}
+.card:hover img{transform:scale(1.055);filter:saturate(1.08)}
+.card-content{position:relative}
+.card-buttons button{min-height:38px}
+.card-buttons button:active{transform:scale(.95)}
+/* Shimmer is visible while product imagery is loading */
+.card img{
+  background:linear-gradient(100deg,#e7eee5 20%,#f8fbf6 40%,#e7eee5 60%);
+  background-size:220% 100%;
+  animation:skeleton-shimmer 1.25s linear infinite;
+}
+.card img.loaded{
+  animation:none;
+  background:#eaf0e7;
+}
+.skeleton-card{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:var(--card-bg-light);
+  padding:0;
+}
+.skeleton-block{
+  background:linear-gradient(100deg,#e7eee5 20%,#f8fbf6 40%,#e7eee5 60%);
+  background-size:220% 100%;
+  animation:skeleton-shimmer 1.25s linear infinite;
+  border-radius:8px;
+}
+.skeleton-image{height:185px;border-radius:0}
+.skeleton-line{height:12px;margin:13px 15px}
+.skeleton-line.short{width:45%;margin-top:10px;margin-bottom:18px}
+.skeleton-line.medium{width:72%}
+@keyframes skeleton-shimmer{
+  0%{background-position:100% 0}
+  100%{background-position:-120% 0}
+}
+body.dark .skeleton-card{background:var(--card-bg-dark);border-color:#3b5145}
+body.dark .skeleton-block,body.dark .card img{
+  background:linear-gradient(100deg,#293a30 20%,#3a5042 40%,#293a30 60%);
+  background-size:220% 100%;
+}
+@media(max-width:650px){
+  .skeleton-image{height:140px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>BUMIBAHARI</h1>
+  <div class="header-actions">
+    <button id="quickAddProductBtn" type="button" aria-label="Tambah produk"><span class="plus-icon">＋</span><span>Tambah Produk</span></button>
+    <button id="themeBtn" aria-label="Ganti tema">🌙</button>
+    <button id="profileBtn">👤 Masuk / Daftar</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">Pasar lokal • Semarang</div>
+    <h2>Hasil bumi dan laut, langsung dari tangan pertama.</h2>
+    <p>Belanja lebih segar sekaligus mendukung petani dan nelayan Semarang. Temukan sayuran, buah, beras, ikan, dan hasil laut langsung dari para produsen lokal.</p>
+    <span class="hero-tag">🌱 Dukung produk lokal Semarang</span>
+  </div>
+</section>
+
+<section class="benefits">
+  <div class="benefit"><span style="font-size:1.6rem">🚜</span><div><b>Langsung dari petani</b><span>Hasil panen tanpa perantara panjang</span></div></div>
+  <div class="benefit"><span style="font-size:1.6rem">🐟</span><div><b>Hasil laut pilihan</b><span>Dari nelayan dan pembudidaya lokal</span></div></div>
+  <div class="benefit"><span style="font-size:1.6rem">🤝</span><div><b>Harga lebih transparan</b><span>Konsumen terhubung dengan penjual</span></div></div>
+</section>
+
+<main class="market-wrap">
+  <div class="market-heading">
+    <div><h2>Belanja hasil panen</h2><p>Pilih produk segar dari petani dan nelayan lokal.</p></div>
+  </div>
+  <div class="top-controls">
+    <div class="search-bar"><input id="searchInput" placeholder="Cari beras, sayur, ikan, udang..." /></div>
+    <div class="categories" id="categoryBtns"></div>
+  </div>
+  <div id="products"></div>
+</main>
+
+<!-- Cart Mini -->
+<div id="cart">
+  <h3>Keranjang</h3>
+  <div id="cartItems"></div>
+  <div style="margin-top:0.6rem">
+    <button id="checkoutBtn" style="width:100%;padding:0.6rem;border-radius:8px;border:none;background:var(--accent);color:#fff">Checkout</button>
+  </div>
+</div>
+
+<!-- Unified Checkout Overlay -->
+<div id="checkoutOverlay">
+  <div class="checkout-content">
+    <span class="close" id="closeCheckout">&times;</span>
+
+    <!-- Step 1: Ringkasan -->
+    <div class="checkout-step step-1 active" id="stepSummary">
+      <h2>Ringkasan Pembayaran</h2>
+      <div id="summaryItems"></div>
+      <div class="fulfillment-box">
+        <strong>Metode penerimaan pesanan</strong>
+        <div class="fulfillment-options">
+          <label><input type="radio" name="fulfillmentMode" value="delivery" checked> 🚚 Dikirim</label>
+          <label><input type="radio" name="fulfillmentMode" value="takeaway"> 🛍️ Take Away / Ambil Sendiri</label>
+        </div>
+        <div id="deliveryFields">
+        <div class="shipping-box">
+        <label for="shippingMethod"><strong>Pilih jasa pengiriman</strong></label>
+        <select id="shippingMethod">
+          <option value="">-- Pilih ekspedisi --</option>
+          <option value="JNE">JNE</option>
+          <option value="J&T">J&T</option>
+          <option value="SiCepat">SiCepat</option>
+          <option value="J&T Cargo" id="jntCargoOption" hidden>J&T Cargo (khusus lebih dari 5 barang)</option>
+        </select>
+        <p class="note" id="shippingHint">Pilih ekspedisi sebelum melanjutkan ke pembayaran.</p>
+        </div>
+        </div>
+        <div id="pickupFields">
+          <label for="pickupPoint"><strong>Lokasi pengambilan / nama lapak</strong></label>
+          <input id="pickupPoint" placeholder="Contoh: Lapak Tani Makmur, Tembalang, Semarang">
+          <p class="note">Hubungi penjual melalui fitur Chat untuk memastikan alamat dan jam pengambilan.</p>
+        </div>
+      </div>
+      <h3>Total: Rp <span id="summaryTotal">0</span></h3>
+      <div style="display:flex;gap:0.5rem;margin-top:0.6rem">
+        <button id="toPaymentBtn" style="flex:1;padding:0.6rem;border-radius:8px;border:none;background:var(--accent);color:#fff">Lanjutkan ke Pembayaran</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Pilih Tipe Pembayaran (E-Wallet / Credit Card) -->
+    <div class="checkout-step step-2" id="stepPaymentType">
+      <h2>Pilih Tipe Pembayaran</h2>
+      <div class="payment-methods">
+        <button data-type="ewallet">E-Wallet</button>
+        <button data-type="card">Credit Card</button>
+      </div>
+      <div style="margin-top:0.6rem">
+        <button id="toProviderBtn" style="padding:0.6rem;border-radius:8px;border:none;background:var(--accent);color:#fff">Pilih Provider</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Pilih Provider & Input (dynamic content area) -->
+    <div class="checkout-step step-3" id="stepProvider">
+      <h2 id="providerTitle">Pilih Provider</h2>
+      <div id="providerOptions" class="provider-list"></div>
+      <div id="providerInputArea" style="margin-top:0.6rem;display:none">
+        <input id="providerInput" placeholder="" />
+        <div style="margin-top:0.6rem">
+          <button id="payBtn" style="padding:0.6rem;border-radius:8px;border:none;background:var(--accent);color:#fff">Bayar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div class="checkout-step step-4" id="stepSuccess">
+      <h2>Pembayaran Berhasil!</h2>
+      <p id="successText">Terima kasih atas pembelian Anda.</p>
+      <div style="margin-top:0.6rem">
+        <button id="closeSuccess" style="padding:0.6rem;border-radius:8px;border:none;background:var(--accent);color:#fff">Tutup</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Profile Overlay -->
+<div id="profileOverlay">
+  <div class="profile-panel">
+    <span class="profile-close" id="closeProfile">&times;</span>
+
+    <div id="authSection">
+      <h2>Masuk ke Pasar Tani Bahari</h2>
+      <div class="section">
+        <label for="loginRole" style="display:block;font-weight:700;margin:6px 0">Login sebagai</label>
+        <select id="loginRole"><option value="buyer">Pembeli</option><option value="seller">Penjual (Petani / Nelayan)</option></select>
+        <input id="authEmail" type="email" placeholder="Email" autocomplete="email" />
+        <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" />
+        <div class="form-row" style="margin-top:8px">
+          <button id="loginBtn">Login</button>
+          <button id="showRegisterBtn">Daftar</button>
+        </div>
+        <p class="note">Pembeli cukup menggunakan email dan password. Penjual wajib mendaftarkan foto wajah saat membuat akun.</p>
+      </div>
+    </div>
+
+    <div id="registerSection" style="display:none">
+      <h2>Daftar Akun Baru</h2>
+      <div class="section">
+        <label for="regRole" style="display:block;font-weight:700;margin:6px 0">Daftar sebagai</label>
+        <select id="regRole"><option value="buyer">Pembeli</option><option value="seller">Penjual (Petani / Nelayan)</option></select>
+        <input id="regName" placeholder="Nama lengkap" autocomplete="name" />
+        <input id="regEmail" type="email" placeholder="Email" autocomplete="email" />
+        <div class="form-row">
+          <input id="regPass" type="password" placeholder="Password" autocomplete="new-password" />
+          <input id="regPass2" type="password" placeholder="Ulangi password" autocomplete="new-password" />
+        </div>
+        <div id="sellerFaceField" style="display:none;margin:8px 0">
+          <label for="sellerFacePhoto" style="display:block;font-weight:700;margin-bottom:5px">Foto wajah penjual <span style="color:#c0392b">(wajib)</span></label>
+          <input id="sellerFacePhoto" type="file" accept="image/*" capture="user" />
+          <p class="note">Unggah foto wajah yang jelas. Foto disimpan sebagai foto verifikasi profil penjual di perangkat ini.</p>
+          <img id="sellerFacePreview" class="avatar-preview" alt="Pratinjau foto wajah" style="display:none;margin-top:8px" />
+        </div>
+        <div class="form-row" style="margin-top:8px">
+          <button id="registerBtn">Buat Akun</button>
+          <button id="showLoginBtn">Kembali</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="profileContent" style="display:none">
+      <h2>Profil Saya</h2>
+      <div class="profile-tabs">
+        <button data-tab="account" class="active">Account Setting</button>
+        <button data-tab="market">My Market</button>
+        <button data-tab="cart">Cart</button>
+        <button data-tab="history">Riwayat</button>
+        <button id="logoutBtn" style="margin-left:auto;background:#fff;border:1px solid #ddd">Logout</button>
+      </div>
+
+      <div id="tabAccount" class="tabPanel">
+        <h3>Account Setting</h3>
+        <div class="section">
+          <div style="display:flex;gap:0.8rem;align-items:center">
+            <img id="avatarPreview" class="avatar-preview" src="" alt="avatar" />
+            <div style="flex:1">
+              <input id="avatarInput" type="file" accept="image/*" />
+              <p class="note">Upload foto profil (preview otomatis).</p>
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <input id="displayName" placeholder="Nama akun" />
+          <div style="margin-top:0.5rem"><button id="saveAccountBtn">Simpan</button></div>
+        </div>
+      </div>
+
+      <div id="tabMarket" class="tabPanel" style="display:none">
+        <h3>Kelola Lapak Saya</h3>
+        <div id="shopSection">
+          <div id="noShop" class="section">
+            <p class="note">Petani dan nelayan dapat membuat lapak untuk menawarkan hasil panen atau tangkapan langsung kepada konsumen.</p>
+            <input id="shopName" placeholder="Nama lapak / kelompok tani / nelayan" />
+            <textarea id="shopDesc" placeholder="Ceritakan hasil panen, jenis usaha, dan keunggulan produk Anda" style="margin-top:0.4rem"></textarea>
+            <div style="margin-top:0.5rem"><button id="createShopBtn">Buat Toko</button></div>
+          </div>
+          <div id="shopPanel" style="display:none">
+            <div class="section">
+              <h4 id="shopTitle"></h4>
+              <p id="shopDescText" class="note"></p>
+            </div>
+            <div class="section">
+              <h4>Pasang hasil panen atau tangkapan</h4>
+              <input id="newProdName" placeholder="Nama produk" />
+              <div class="form-row" style="margin-top:0.4rem">
+                <input id="newProdPrice" type="number" min="1" placeholder="Harga per kg / ikat / ekor (Rp)" />
+                <input id="newProdStock" type="number" min="0" placeholder="Stok / jumlah (opsional)" />
+              </div>
+              <label for="newProdPhoto" style="display:block;font-size:.85rem;font-weight:700;margin:9px 0 4px">Foto barang dagangan</label>
+              <input id="newProdPhoto" type="file" accept="image/*" />
+              <input id="newProdImg" type="hidden" />
+              <div id="newProdPhotoPreview" style="display:none;margin:8px 0">
+                <img id="newProdPhotoPreviewImg" alt="Pratinjau foto produk" style="width:130px;height:95px;object-fit:cover;border-radius:10px;border:1px solid #dce4da" />
+                <p class="note">Pratinjau foto produk</p>
+              </div>
+              <div class="form-row" style="margin-top:0.4rem">
+                <select id="newProdCategory" aria-label="Jenis barang">
+                  <option value="Pertanian">Pertanian</option>
+                  <option value="Perikanan">Perikanan</option>
+                  <option value="Peternakan">Peternakan</option>
+                </select>
+                <input id="newProdLocation" placeholder="Lokasi penjual (contoh: Tembalang, Semarang)" required />
+              </div>
+              <textarea id="newProdDesc" placeholder="Deskripsi barang, kualitas, dan cara pemesanan" style="margin-top:0.4rem"></textarea>
+              <p class="note">Isi lokasi kecamatan/kelurahan agar pembeli mengetahui asal produk.</p>
+              <p class="note">Kategori Peternakan: daging sapi, kambing, ayam, dan telur. Dilarang menjual daging babi atau hewan yang diharamkan.</p>
+              <div style="margin-top:0.6rem"><button id="addProdBtn">+ Tambahkan Dagangan</button></div>
+            </div>
+            <div class="section">
+              <h4>Daftar produk lapak</h4>
+              <div id="myShopProducts" class="shop-list"></div>
+            </div>
+            <div class="section">
+              <h4>Pesanan Masuk &amp; Pelacakan</h4>
+              <div id="sellerOrders" class="history-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tabCart" class="tabPanel" style="display:none">
+        <h3>Keranjang Belanja</h3>
+        <div id="profileCartItems"></div>
+        <div style="margin-top:0.6rem"><button id="profileCheckoutBtn">Checkout</button></div>
+      </div>
+
+      <div id="tabHistory" class="tabPanel" style="display:none">
+        <h3>Riwayat Pembelian</h3>
+        <div id="historyList" class="history-list">
+          <!-- filled dynamically -->
+        </div>
+      </div>
+
+      <div id="tabChat" class="tabPanel" style="display:none">
+        <h3>Pesan &amp; Chat</h3>
+        <p class="note" style="margin:5px 0 12px">Hubungi pembeli lain atau penjual untuk bertanya produk, pesanan, dan jadwal pengambilan. Prototype chat ini menyimpan pesan di browser yang sama.</p>
+        <div class="chat-layout">
+          <div class="chat-users"><strong>Kontak</strong><div id="chatContacts"></div></div>
+          <div class="chat-window">
+            <strong id="chatWith">Pilih kontak untuk memulai chat</strong>
+            <div id="chatMessages"><p class="note">Pesan akan tampil di sini.</p></div>
+            <div class="chat-compose">
+              <input id="chatInput" placeholder="Tulis pesan..." maxlength="1000" disabled>
+              <button id="sendChatBtn" disabled>Kirim</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================
+   Helpers: storage and uid
+   ============================ */
+function getUsers(){return JSON.parse(localStorage.getItem('ecolo_users')||'[]')}
+function saveUsers(u){localStorage.setItem('ecolo_users',JSON.stringify(u))}
+function getCurrentUser(){return JSON.parse(localStorage.getItem('ecolo_current')||'null')}
+function setCurrentUser(obj){localStorage.setItem('ecolo_current',JSON.stringify(obj)); syncAfterAuthChange()}
+function clearCurrentUser(){localStorage.removeItem('ecolo_current'); syncAfterAuthChange()}
+
+function uid(){return 'p'+Math.random().toString(36).slice(2,9)}
+
+/* ============================
+   Initial products (persisted)
+   ============================ */
+let products = JSON.parse(localStorage.getItem('ecolo_products')||'null');
+if(!products || (products.length && products.every(p=>!p.owner && ['Kerajinan','Fashion','Aksesoris','Rumah'].includes(p.category)))){
+  products = [
+    {id:uid(),name:'Beras Mentik Wangi',desc:'Beras pulen pilihan dari petani lokal, cocok untuk konsumsi keluarga.',price:16500,img:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=700',owner:null,category:'Pertanian',location:'Semarang'},
+    {id:uid(),name:'Sayur Pakcoy Segar',desc:'Pakcoy segar hasil panen, cocok untuk tumisan dan sup.',price:8000,img:'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=700',owner:null,category:'Pertanian',location:'Semarang'},
+    {id:uid(),name:'Cabai Merah Keriting',desc:'Cabai pilihan untuk kebutuhan dapur sehari-hari.',price:28000,img:'https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=700',owner:null,category:'Pertanian',location:'Semarang'},
+    {id:uid(),name:'Ikan Bandeng Segar',desc:'Bandeng segar pilihan dari tambak pesisir Semarang.',price:32000,img:'https://images.unsplash.com/photo-1510130387422-82bed34b37e9?w=700',owner:null,category:'Perikanan',location:'Pesisir Semarang'},
+    {id:uid(),name:'Udang Vaname',desc:'Udang segar hasil budidaya, tersedia sesuai stok panen.',price:58000,img:'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=700',owner:null,category:'Perikanan',location:'Pesisir Semarang'},
+    {id:uid(),name:'Ikan Lele Segar',desc:'Lele segar untuk digoreng, dibakar, atau diolah menjadi pecel lele.',price:22000,img:'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=700',owner:null,category:'Perikanan',location:'Pesisir Semarang'},
+    {id:uid(),name:'Pisang Kepok',desc:'Pisang kepok matang pohon, cocok untuk digoreng atau direbus.',price:14000,img:'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=700',owner:null,category:'Pertanian',location:'Semarang'},
+    {id:uid(),name:'Ikan Kembung',desc:'Ikan laut segar untuk menu masakan rumahan.',price:30000,img:'https://images.unsplash.com/photo-1510130387422-82bed34b37e9?w=700',owner:null,category:'Perikanan',location:'Pesisir Semarang'},
+    {id:uid(),name:'Daging Sapi Segar',desc:'Daging sapi segar untuk kebutuhan masakan keluarga.',price:135000,img:'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=700',owner:null,category:'Peternakan',location:'Semarang'},
+    {id:uid(),name:'Daging Ayam Segar',desc:'Ayam segar yang telah dibersihkan dan siap diolah.',price:38000,img:'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=700',owner:null,category:'Peternakan',location:'Semarang'},
+    {id:uid(),name:'Telur Ayam Negeri',desc:'Telur ayam segar untuk kebutuhan sehari-hari.',price:29000,img:'https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=700',owner:null,category:'Peternakan',location:'Semarang'},
+    {id:uid(),name:'Daging Kambing Segar',desc:'Daging kambing segar untuk berbagai hidangan.',price:145000,img:'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=700',owner:null,category:'Peternakan',location:'Semarang'}
+  ];
+  localStorage.setItem('ecolo_products',JSON.stringify(products));
+}
+function saveProducts(){localStorage.setItem('ecolo_products',JSON.stringify(products))}
+
+// Migrasi katalog: tambahkan contoh produk Peternakan untuk pengguna lama yang sudah memiliki data tersimpan.
+(function ensureLivestockExamples(){
+  const examples = [
+    {name:'Daging Sapi Segar',desc:'Daging sapi segar untuk kebutuhan masakan keluarga.',price:135000,img:'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=700',category:'Peternakan',location:'Semarang'},
+    {name:'Daging Ayam Segar',desc:'Ayam segar yang telah dibersihkan dan siap diolah.',price:38000,img:'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=700',category:'Peternakan',location:'Semarang'},
+    {name:'Telur Ayam Negeri',desc:'Telur ayam segar untuk kebutuhan sehari-hari.',price:29000,img:'https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=700',category:'Peternakan',location:'Semarang'},
+    {name:'Daging Kambing Segar',desc:'Daging kambing segar untuk berbagai hidangan.',price:145000,img:'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=700',category:'Peternakan',location:'Semarang'}
+  ];
+  const present = new Set(products.filter(p=>p.category==='Peternakan').map(p=>p.name.toLowerCase()));
+  let changed = false;
+  examples.forEach(item=>{
+    if(!present.has(item.name.toLowerCase())){
+      products.push({id:uid(),...item,owner:null,stock:null});
+      changed = true;
+    }
+  });
+  if(changed) saveProducts();
+})();
+
+
+/* ============================
+   Cart (session)
+   ============================ */
+let cart = JSON.parse(sessionStorage.getItem('ecolo_cart')||'[]');
+function saveCart(){sessionStorage.setItem('ecolo_cart',JSON.stringify(cart))}
+
+/* ============================
+   UI Refs
+   ============================ */
+const productsDiv = document.getElementById('products');
+const cartDiv = document.getElementById('cart');
+const cartItemsDiv = document.getElementById('cartItems');
+const categoryBtns = document.getElementById('categoryBtns');
+const searchInput = document.getElementById('searchInput');
+
+/* ============================
+   Categories (dynamic)
+   ============================ */
+function getCategories(){
+  const set = new Set(products.map(p=>p.category||'Lainnya'));
+  return ['Semua','Pertanian','Perikanan','Peternakan', ...Array.from(set).filter(c=>!['Pertanian','Perikanan','Peternakan'].includes(c))];
+}
+function renderCategoryButtons(){
+  categoryBtns.innerHTML = '';
+  const cats = getCategories();
+  cats.forEach((c,i)=>{
+    const btn = document.createElement('button');
+    btn.textContent = c;
+    btn.dataset.cat = c;
+    if(i===0) btn.classList.add('active');
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('#categoryBtns button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts(c, searchInput.value.trim().toLowerCase());
+    });
+    categoryBtns.appendChild(btn);
+  });
+}
+
+/* ============================
+   Render products
+   ============================ */
+let hasPaintedProductCatalog = false;
+function renderProducts(filter='Semua', searchTerm=''){
+  if(!hasPaintedProductCatalog){
+    hasPaintedProductCatalog = true;
+    productsDiv.innerHTML = Array.from({length:8},()=>`
+      <div class="skeleton-card" aria-hidden="true">
+        <div class="skeleton-block skeleton-image"></div>
+        <div class="skeleton-block skeleton-line medium"></div>
+        <div class="skeleton-block skeleton-line"></div>
+        <div class="skeleton-block skeleton-line short"></div>
+      </div>`).join('');
+    window.setTimeout(()=>renderProducts(filter,searchTerm),520);
+    return;
+  }
+  productsDiv.innerHTML = '';
+  const toShow = products.filter(p=>{
+    const matchCat = (filter==='Semua') ? true : (p.category===filter);
+    const q = searchTerm || '';
+    const matchText = (p.name+ ' '+(p.desc||'')).toLowerCase().includes(q);
+    return matchCat && matchText;
+  });
+  if(toShow.length===0){
+    productsDiv.innerHTML = '<p class="note" style="padding:1rem">Tidak ada produk yang cocok.</p>';
+    return;
+  }
+
+  toShow.forEach((p,i)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img class="product-image" src="${p.img||('https://picsum.photos/300?random='+Math.floor(Math.random()*1000))}" alt="${escapeHtml(p.name)}" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')" />
+      <div class="card-content">
+        <h3>${escapeHtml(p.name)}</h3>
+        <p>${escapeHtml(p.desc||'')}</p>
+        <div class="meta"><span class="price">Rp ${Number(p.price).toLocaleString()}</span><span class="note">${escapeHtml(p.category||'Lainnya')}</span></div>
+        <p class="product-location" style="font-size:.78rem;color:#718078;margin:-4px 0 12px">📍 ${escapeHtml(p.location||'Semarang')}</p>
+        <div class="qty-control"><label for="qty-${p.id}" style="font-size:.8rem">Jumlah</label><input id="qty-${p.id}" class="product-qty" data-id="${p.id}" type="number" min="1" value="1" /></div>
+        <div class="card-buttons">
+          <button class="fav" data-id="${p.id}">♡</button>
+          <button class="cartBtn" data-id="${p.id}">Tambah</button>
+          <button class="buy" data-id="${p.id}">Beli</button>
+        </div>
+        ${p.owner ? `<button class="chatSellerBtn" data-owner="${escapeHtml(p.owner)}" style="width:100%;margin-top:7px;padding:8px;border:1px solid #237a50;border-radius:9px;background:#fff;color:#237a50;font-weight:700">Chat Penjual</button>` : ''}
+      </div>
+    `;
+    productsDiv.appendChild(card);
+
+    // delay show for cascade
+    setTimeout(()=>card.classList.add('show'), i*60);
+
+    // render favorite state if logged in
+    const cur = getCurrentUser();
+    if(cur){
+      const favBtn = card.querySelector('.fav');
+      if(Array.isArray(cur.favorites) && cur.favorites.includes(p.id)){
+        favBtn.textContent = '❤️';
+      } else {
+        favBtn.textContent = '♡';
+      }
+    }
+  });
+}
+
+/* ============================
+   Utilities
+   ============================ */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; });}
+
+/* ============================
+   Render cart
+   ============================ */
+function renderCart(){
+  cartItemsDiv.innerHTML = '';
+  if(cart.length>0){
+    cartDiv.style.display = 'block';
+    cart.forEach(it=>{
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `<span>${escapeHtml(it.name)} × ${Number(it.qty||1)}</span><span>Rp ${(Number(it.price)*Number(it.qty||1)).toLocaleString()}</span>`;
+      cartItemsDiv.appendChild(div);
+    });
+  } else {
+    cartDiv.style.display = 'none';
+  }
+}
+
+function ensureBuyerSession(){
+  const cur=getCurrentUser();
+  if(!cur){
+    alert('Silakan login terlebih dahulu untuk melanjutkan pembelian dan melacak pesanan.');
+    openProfile();
+    return false;
+  }
+  // Akun penjual juga boleh berbelanja seperti pembeli.
+  return true;
+}
+
+/* ============================
+   Product interactions (delegation)
+   ============================ */
+productsDiv.addEventListener('click', e=>{
+  if(e.target.classList.contains('chatSellerBtn')){ openChatWith(e.target.dataset.owner); return; }
+  // favorite toggle
+  if(e.target.classList.contains('fav')){
+    const id = e.target.dataset.id;
+    const cur = getCurrentUser();
+    if(!cur){ alert('Silakan login untuk menandai favorit'); return; }
+    cur.favorites = cur.favorites || [];
+    const idx = cur.favorites.indexOf(id);
+    if(idx === -1){ cur.favorites.push(id); e.target.textContent = '❤️'; }
+    else { cur.favorites.splice(idx,1); e.target.textContent = '♡'; }
+    saveUserChanges(cur);
+    setCurrentUser(cur);
+    return;
+  }
+
+  // add to cart
+  if(e.target.classList.contains('cartBtn')){
+    const id = e.target.dataset.id;
+    const prod = products.find(p=>p.id===id);
+    if(!prod){ alert('Produk tidak ditemukan'); return; }
+    const qtyInput = document.querySelector(`.product-qty[data-id="${id}"]`);
+    const qty = Math.min(999, Math.max(1, Math.floor(Number(qtyInput?.value)||1)));
+    const existing = cart.find(c=>c.id===prod.id);
+    if(existing) existing.qty = Number(existing.qty||1) + qty;
+    else cart.push({id:prod.id,name:prod.name,price:prod.price,qty,owner:prod.owner||null});
+    saveCart(); renderCart(); renderProfileCart();
+    alert('Produk ditambahkan ke keranjang');
+    return;
+  }
+
+  // buy (direct)
+  if(e.target.classList.contains('buy')){
+    if(!ensureBuyerSession()) return;
+    const id = e.target.dataset.id;
+    const prod = products.find(p=>p.id===id);
+    if(!prod){ alert('Produk tidak ditemukan'); return; }
+    const qtyInput = document.querySelector(`.product-qty[data-id="${id}"]`);
+    const qty = Math.min(999, Math.max(1, Math.floor(Number(qtyInput?.value)||1)));
+    openCheckoutOverlay('single', [{id:prod.id,name:prod.name,price:prod.price,qty,owner:prod.owner||null}]);
+    return;
+  }
+});
+
+/* ============================
+   Checkout unified overlay logic
+   ============================ */
+const checkoutOverlay = document.getElementById('checkoutOverlay');
+const closeCheckout = document.getElementById('closeCheckout');
+const summaryItems = document.getElementById('summaryItems');
+const summaryTotal = document.getElementById('summaryTotal');
+const shippingMethod = document.getElementById('shippingMethod');
+const jntCargoOption = document.getElementById('jntCargoOption');
+const shippingHint = document.getElementById('shippingHint');
+const toPaymentBtn = document.getElementById('toPaymentBtn');
+const stepSummary = document.getElementById('stepSummary');
+const stepPaymentType = document.getElementById('stepPaymentType');
+const stepProvider = document.getElementById('stepProvider');
+const stepSuccess = document.getElementById('stepSuccess');
+const providerOptions = document.getElementById('providerOptions');
+const providerTitle = document.getElementById('providerTitle');
+const providerInputArea = document.getElementById('providerInputArea');
+const providerInput = document.getElementById('providerInput');
+const payBtn = document.getElementById('payBtn');
+const toProviderBtn = document.getElementById('toProviderBtn');
+const paymentTypeButtons = document.querySelectorAll('.payment-methods button');
+const successText = document.getElementById('successText');
+const closeSuccess = document.getElementById('closeSuccess');
+
+let checkoutContext = {
+  mode: 'cart', // 'cart' or 'single'
+  items: [], // array of {id,name,price}
+  selectedType: '', // 'ewallet'|'card'
+  selectedProvider: '',
+  providerInputValue: '',
+  selectedShipping: '',
+  fulfillmentMode: 'delivery',
+  pickupPoint: ''
+};
+
+function openCheckoutOverlay(mode='cart', items=[]){
+  checkoutContext.mode = mode;
+  checkoutContext.items = items.length ? items.slice() : cart.slice();
+  checkoutContext.selectedType = '';
+  checkoutContext.selectedProvider = '';
+  checkoutContext.providerInputValue = '';
+  checkoutContext.selectedShipping = '';
+  checkoutContext.fulfillmentMode = 'delivery';
+  checkoutContext.pickupPoint = '';
+  document.querySelector('input[name="fulfillmentMode"][value="delivery"]').checked = true;
+  document.getElementById('deliveryFields').style.display = 'block';
+  document.getElementById('pickupFields').style.display = 'none';
+  document.getElementById('pickupPoint').value = '';
+  shippingMethod.value = '';
+  // reset UI steps
+  document.querySelectorAll('.checkout-step').forEach(s=>s.classList.remove('active'));
+  stepSummary.classList.add('active');
+  // fill summary
+  renderSummary();
+  checkoutOverlay.classList.add('active');
+}
+
+function renderSummary(){
+  summaryItems.innerHTML = '';
+  let total = 0;
+  const totalQty = checkoutContext.items.reduce((sum,it)=>sum+Number(it.qty||1),0);
+  checkoutContext.items.forEach(it=>{
+    const d = document.createElement('div');
+    d.style.marginBottom = '6px';
+    const qty = Number(it.qty||1);
+    d.textContent = `${it.name} × ${qty} - Rp ${(Number(it.price)*qty).toLocaleString()}`;
+    summaryItems.appendChild(d);
+    total += Number(it.price)*qty;
+  });
+  jntCargoOption.hidden = totalQty <= 5;
+  jntCargoOption.disabled = totalQty <= 5;
+  if(totalQty <= 5 && shippingMethod.value === 'J&T Cargo') shippingMethod.value = '';
+  shippingHint.textContent = totalQty > 5 ? 'Jumlah barang lebih dari 5. J&T Cargo tersedia sebagai pilihan tambahan.' : 'JNE, J&T, dan SiCepat tersedia untuk pesanan ini.';
+  summaryTotal.textContent = total.toLocaleString();
+}
+
+// open checkout from cart button
+document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+  if(!ensureBuyerSession()) return;
+  if(cart.length===0){ alert('Keranjang kosong'); return; }
+  openCheckoutOverlay('cart', cart.slice());
+});
+
+// profile checkout button (from profile cart tab)
+document.getElementById('profileCheckoutBtn').addEventListener('click', ()=>{
+  if(!ensureBuyerSession()) return;
+  if(cart.length===0){ alert('Keranjang kosong'); return; }
+  closeProfile(); openCheckoutOverlay('cart', cart.slice());
+});
+
+closeCheckout.addEventListener('click', ()=>{ checkoutOverlay.classList.remove('active'); resetCheckoutSteps(); });
+
+function resetCheckoutSteps(){
+  checkoutContext.selectedType = '';
+  checkoutContext.selectedProvider = '';
+  providerOptions.innerHTML = '';
+  providerInputArea.style.display = 'none';
+  providerInput.value = '';
+  document.querySelectorAll('.payment-methods button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.provider-list button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.checkout-step').forEach(s=>s.classList.remove('active'));
+  stepSummary.classList.add('active');
+}
+
+// Step navigation
+toPaymentBtn.addEventListener('click', ()=>{
+  if(!ensureBuyerSession()) return;
+  if(!checkoutContext.items.length){ alert('Tidak ada barang untuk dibayar.'); return; }
+  const totalQty = checkoutContext.items.reduce((sum,it)=>sum+Number(it.qty||1),0);
+  checkoutContext.fulfillmentMode = document.querySelector('input[name="fulfillmentMode"]:checked')?.value || 'delivery';
+  if(checkoutContext.fulfillmentMode === 'takeaway'){
+    const point = document.getElementById('pickupPoint').value.trim();
+    if(!point){ alert('Masukkan lokasi pengambilan atau nama lapak.'); return; }
+    checkoutContext.pickupPoint = point;
+    checkoutContext.selectedShipping = 'Take Away (Ambil Sendiri)';
+  } else {
+    if(!shippingMethod.value){ alert('Pilih jasa pengiriman terlebih dahulu.'); return; }
+    if(shippingMethod.value === 'J&T Cargo' && totalQty <= 5){ alert('J&T Cargo hanya tersedia jika jumlah barang lebih dari 5.'); return; }
+    checkoutContext.selectedShipping = shippingMethod.value;
+  }
+  document.querySelectorAll('.checkout-step').forEach(s=>s.classList.remove('active')); 
+  stepPaymentType.classList.add('active');
+});
+
+toProviderBtn.addEventListener('click', ()=>{
+  // ensure a type selected
+  if(!checkoutContext.selectedType){
+    alert('Pilih tipe pembayaran terlebih dahulu (E-Wallet atau Credit Card).'); return;
+  }
+  // show provider step
+  populateProvidersForType(checkoutContext.selectedType);
+  document.querySelectorAll('.checkout-step').forEach(s=>s.classList.remove('active'));
+  stepProvider.classList.add('active');
+});
+
+// select payment type buttons
+paymentTypeButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=> {
+    document.querySelectorAll('.payment-methods button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    checkoutContext.selectedType = btn.dataset.type;
+  });
+});
+
+// populate provider options based on type
+function populateProvidersForType(type){
+  providerOptions.innerHTML = '';
+  providerInputArea.style.display = 'none';
+  providerInput.value = '';
+  checkoutContext.selectedProvider = '';
+  providerTitle.textContent = (type === 'ewallet') ? 'Pilih E-Wallet' : 'Pilih Penyedia / Bank';
+  const list = (type === 'ewallet') ? ['GoPay','Dana','OVO','PayLater'] : ['BCA','BNI','VISA','American Express'];
+  list.forEach(p=>{
+    const b = document.createElement('button');
+    b.textContent = p;
+    b.dataset.provider = p;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.provider-list button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      checkoutContext.selectedProvider = p;
+      // show appropriate input placeholder
+      if(type === 'ewallet'){
+        providerInput.placeholder = 'Masukkan nomor HP yang terhubung (contoh: 0812xxxx)'; providerInput.type='tel';
+      } else {
+        providerInput.placeholder = 'Masukkan nomor kartu kredit (tanpa spasi)'; providerInput.type='text';
+      }
+      providerInputArea.style.display = 'block';
+    });
+    providerOptions.appendChild(b);
+  });
+}
+
+// pay button logic
+payBtn.addEventListener('click', ()=>{
+  // validations
+  if(!checkoutContext.selectedProvider){ alert('Pilih provider terlebih dahulu'); return; }
+  const val = providerInput.value.trim();
+  if(!val){ alert('Masukkan nomor/nomor kartu yang valid'); return; }
+  // basic validation rules
+  if(checkoutContext.selectedType === 'ewallet'){
+    // phone-like: minimal 7 digits and contains digits
+    const digits = val.replace(/\D/g,'');
+    if(digits.length < 7){ alert('Nomor HP tampaknya kurang panjang'); return; }
+  } else {
+    // card-like: digits length between 12 and 19
+    const digits = val.replace(/\D/g,'');
+    if(digits.length < 12 || digits.length > 19){ alert('Nomor kartu tampaknya tidak valid'); return; }
+  }
+
+  // proceed payment (simulate)
+  performPayment(val);
+});
+
+// performPayment: simulate, persist history, adjust cart
+function performPayment(inputValue){
+  // create transaction object
+  const now = new Date();
+  const ts = now.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  const masked = maskNumber(inputValue);
+  const items = checkoutContext.items.map(i=>({id:i.id,name:i.name,price:i.price,qty:Number(i.qty||1),owner:i.owner||null}));
+  const total = checkoutContext.items.reduce((s,i)=>s+Number(i.price)*Number(i.qty||1),0);
+  const method = (checkoutContext.selectedType === 'ewallet') ? 'E-Wallet' : 'Credit Card';
+  const provider = checkoutContext.selectedProvider || '';
+  const tx = { id: 't'+Math.random().toString(36).slice(2,9), items, total, method, provider, target: masked, ts,
+    shipping:checkoutContext.selectedShipping, fulfillment:checkoutContext.fulfillmentMode, pickupPoint:checkoutContext.pickupPoint, status:'Diproses penjual', buyerEmail:(getCurrentUser()||{}).email||'Tamu' };
+  const allOrders = JSON.parse(localStorage.getItem('ecolo_orders')||'[]');
+  allOrders.unshift(tx);
+  try { localStorage.setItem('ecolo_orders',JSON.stringify(allOrders)); }
+  catch(err){ alert('Pesanan tidak dapat disimpan di browser. Periksa ruang penyimpanan.'); return; }
+
+  // store to current user history (if logged in)
+  const cur = getCurrentUser();
+  if(cur){
+    cur.history = cur.history || [];
+    cur.history.unshift(tx); // newest first
+    saveUserChanges(cur);
+  } else {
+    // if not logged in, optionally store globally? We'll store in localStorage 'guest_history' as fallback
+    const gh = JSON.parse(localStorage.getItem('ecolo_guest_history')||'[]');
+    gh.unshift(tx); localStorage.setItem('ecolo_guest_history',JSON.stringify(gh));
+  }
+
+  // if single buy and item exists in cart, remove it
+  if(checkoutContext.mode === 'single'){
+    checkoutContext.items.forEach(it=>{
+      const idx = cart.findIndex(c=>c.id === it.id);
+      if(idx !== -1){
+        cart.splice(idx,1);
+        saveCart();
+      }
+    });
+  } else if(checkoutContext.mode === 'cart'){
+    // if checkout from cart, clear cart
+    cart = [];
+    saveCart();
+  }
+
+  // success UI
+  successText.textContent = `Pembayaran berhasil. Total Rp ${Number(tx.total).toLocaleString()} — ${tx.method} - ${tx.provider}. ${tx.fulfillment==='takeaway'?'Metode: Take Away · Ambil di '+tx.pickupPoint:'Ekspedisi: '+tx.shipping}. Kode pesanan: ${tx.id}.`;
+  document.querySelectorAll('.checkout-step').forEach(s=>s.classList.remove('active'));
+  stepSuccess.classList.add('active');
+
+  // update UI states
+  renderCart();
+  renderProducts(getActiveCategory(), searchInput.value.trim().toLowerCase());
+  syncAfterAuthChange(); // update history in profile if open
+}
+
+// Mask number for display: keep first 2 and last 2 (or last 4 for cards) depending length
+function maskNumber(s){
+  const digits = String(s).replace(/\D/g,'');
+  if(digits.length <= 4) return digits.replace(/.(?=.$)/g,'*');
+  if(digits.length <= 8) return digits.replace(/.(?=...$)/g,'*'); // show last 3
+  // show first 2 and last 2
+  const first = digits.slice(0,2);
+  const last = digits.slice(-2);
+  const mid = '*'.repeat(Math.max(4,digits.length-4));
+  return first + mid + last;
+}
+
+closeSuccess.addEventListener('click', ()=>{
+  checkoutOverlay.classList.remove('active');
+  resetCheckoutSteps();
+});
+
+// when overlay closed by X: reset steps too
+closeCheckout.addEventListener('click', ()=> resetCheckoutSteps());
+
+/* ============================
+   Profile / Auth flows
+   ============================ */
+const profileBtn = document.getElementById('profileBtn');
+const profileOverlay = document.getElementById('profileOverlay');
+const authSection = document.getElementById('authSection');
+const registerSection = document.getElementById('registerSection');
+const profileContent = document.getElementById('profileContent');
+
+function openProfile(){ profileOverlay.classList.add('active'); refreshAuthUI(); }
+function closeProfile(){ profileOverlay.classList.remove('active'); }
+
+profileBtn.addEventListener('click', openProfile);
+const quickAddProductBtn = document.getElementById('quickAddProductBtn');
+quickAddProductBtn.addEventListener('click', ()=>{
+  if(getCurrentUser()?.role !== 'seller'){ alert('Fitur tambah produk khusus akun penjual.'); return; }
+  if(!getCurrentUser()){ openProfile(); return; }
+  openProfile();
+  document.querySelectorAll('.profile-tabs button[data-tab]').forEach(b=>b.classList.toggle('active', b.dataset.tab==='market'));
+  document.querySelectorAll('.tabPanel').forEach(t=>t.style.display='none');
+  document.getElementById('tabMarket').style.display='block';
+  setTimeout(()=>{
+    const target = document.getElementById('shopPanel').style.display !== 'none' ? document.getElementById('newProdName') : document.getElementById('shopName');
+    target?.scrollIntoView({behavior:'smooth',block:'center'});
+    target?.focus();
+  }, 120);
+});
+document.getElementById('closeProfile').addEventListener('click', closeProfile);
+
+// Role-aware registration and login
+const loginRole = document.getElementById('loginRole');
+const regRole = document.getElementById('regRole');
+const sellerFaceField = document.getElementById('sellerFaceField');
+const sellerFacePhoto = document.getElementById('sellerFacePhoto');
+const sellerFacePreview = document.getElementById('sellerFacePreview');
+function updateSellerRegistrationFields(){
+  const isSeller = regRole.value === 'seller';
+  sellerFaceField.style.display = isSeller ? 'block' : 'none';
+  sellerFacePhoto.required = isSeller;
+}
+regRole.addEventListener('change', updateSellerRegistrationFields);
+sellerFacePhoto.addEventListener('change', ()=>{
+  const file = sellerFacePhoto.files && sellerFacePhoto.files[0];
+  if(!file){ sellerFacePreview.style.display='none'; sellerFacePreview.src=''; return; }
+  if(!file.type.startsWith('image/')){ alert('File harus berupa gambar.'); sellerFacePhoto.value=''; return; }
+  if(file.size > 3 * 1024 * 1024){ alert('Ukuran foto maksimal 3 MB.'); sellerFacePhoto.value=''; sellerFacePreview.style.display='none'; return; }
+  const reader = new FileReader();
+  reader.onload = e=>{ sellerFacePreview.src=e.target.result; sellerFacePreview.style.display='block'; };
+  reader.readAsDataURL(file);
+});
+document.getElementById('showRegisterBtn').addEventListener('click', ()=>{ authSection.style.display='none'; registerSection.style.display='block'; updateSellerRegistrationFields(); });
+document.getElementById('showLoginBtn').addEventListener('click', ()=>{ authSection.style.display='block'; registerSection.style.display='none'; });
+
+document.getElementById('registerBtn').addEventListener('click', ()=>{
+  const role = regRole.value;
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  const faceFile = sellerFacePhoto.files && sellerFacePhoto.files[0];
+  if(!name||!email||!pass||!pass2){ alert('Lengkapi nama, email, dan password.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ alert('Masukkan alamat email yang valid.'); return; }
+  if(pass.length < 6){ alert('Password minimal 6 karakter.'); return; }
+  if(pass!==pass2){ alert('Password tidak sama.'); return; }
+  if(role==='seller' && !faceFile){ alert('Penjual wajib mengunggah foto wajah.'); return; }
+  const users = getUsers();
+  if(users.find(u=>u.email===email)){ alert('Email sudah terdaftar, silakan login.'); return; }
+  const createAccount = faceData => {
+    const newUser = {email,name,password:pass,role,facePhoto:faceData||null,photo:faceData||null,shop:null,favorites:[],history:[]};
+    users.push(newUser);
+    try { saveUsers(users); }
+    catch(err){ alert('Penyimpanan gagal. Coba gunakan foto yang lebih kecil.'); return; }
+    alert('Akun '+(role==='seller'?'penjual':'pembeli')+' berhasil dibuat. Silakan login.');
+    document.getElementById('authEmail').value=email;
+    loginRole.value=role;
+    document.getElementById('authPassword').value='';
+    registerSection.style.display='none'; authSection.style.display='block';
+  };
+  if(role==='seller'){
+    // Compress the face photo before saving it in browser storage.
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxSide = 720, scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale); canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        createAccount(canvas.toDataURL('image/jpeg', .72));
+      };
+      img.onerror = ()=>alert('Foto tidak dapat diproses. Silakan pilih foto lain.');
+      img.src = e.target.result;
+    };
+    reader.onerror = ()=>alert('Foto tidak dapat dibaca. Silakan pilih foto lain.');
+    reader.readAsDataURL(faceFile);
+  } else createAccount(null);
+});
+
+document.getElementById('loginBtn').addEventListener('click', ()=>{
+  const role = loginRole.value;
+  const email = document.getElementById('authEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('authPassword').value;
+  if(!email||!pass){ alert('Masukkan email dan password.'); return; }
+  const users = getUsers();
+  const u = users.find(x=>x.email===email);
+  if(!u){ alert('Email belum terdaftar. Silakan daftar terlebih dahulu.'); return; }
+  // Existing accounts without a role are treated as buyer accounts for safety.
+  const savedRole = u.role || 'buyer';
+  if(savedRole !== role){ alert('Jenis akun tidak sesuai. Pilih login sebagai '+(savedRole==='seller'?'Penjual':'Pembeli')+'.'); return; }
+  if(u.password!==pass){ alert('Password salah.'); return; }
+  setCurrentUser({...u,role:savedRole}); alert('Login berhasil sebagai '+(savedRole==='seller'?'Penjual':'Pembeli')+'.');
+});
+
+// refresh UI based on auth
+function refreshAuthUI(){
+  const cur = getCurrentUser();
+  quickAddProductBtn.style.display = cur && cur.role === 'seller' ? 'inline-flex' : 'none';
+  document.querySelectorAll('.profile-tabs button[data-tab=\"market\"]').forEach(b=>b.style.display = cur && cur.role === 'seller' ? '' : 'none');
+  if(cur){
+    authSection.style.display='none'; registerSection.style.display='none'; profileContent.style.display='block';
+    loadProfileData();
+  } else {
+    authSection.style.display='block'; registerSection.style.display='none'; profileContent.style.display='none';
+  }
+}
+
+// logout
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  clearCurrentUser(); alert('Anda telah logout');
+});
+
+/* ============================
+   Account: avatar & save
+   ============================ */
+const avatarInput = document.getElementById('avatarInput');
+const avatarPreview = document.getElementById('avatarPreview');
+const displayName = document.getElementById('displayName');
+const saveAccountBtn = document.getElementById('saveAccountBtn');
+
+avatarInput.addEventListener('change', e=>{
+  const f = e.target.files[0];
+  if(!f) return;
+  const reader = new FileReader();
+  reader.onload = function(){ avatarPreview.src = reader.result; const cur = getCurrentUser(); if(cur){ cur.photo = reader.result; saveUserChanges(cur); setCurrentUser(cur); } };
+  reader.readAsDataURL(f);
+});
+
+saveAccountBtn.addEventListener('click', ()=>{
+  const cur = getCurrentUser();
+  if(!cur){ alert('Tidak ada user aktif'); return; }
+  cur.name = displayName.value.trim() || cur.name;
+  saveUserChanges(cur);
+  alert('Perubahan disimpan');
+});
+
+function saveUserChanges(updated){
+  const users = getUsers(); const idx = users.findIndex(u=>u.email===updated.email);
+  if(idx>-1){ users[idx] = updated; saveUsers(users); setCurrentUser(updated); }
+}
+
+/* ============================
+   Load profile & My Market
+   ============================ */
+function loadProfileData(){
+  const cur = getCurrentUser();
+  if(!cur) return;
+  document.getElementById('displayName').value = cur.name||'';
+  avatarPreview.src = cur.photo || 'https://via.placeholder.com/84';
+  // shop UI
+  if(cur.shop){
+    document.getElementById('noShop').style.display='none';
+    document.getElementById('shopPanel').style.display='block';
+    document.getElementById('shopTitle').textContent = cur.shop.name;
+    document.getElementById('shopDescText').textContent = cur.shop.desc;
+    renderMyShopProducts();
+  } else {
+    document.getElementById('noShop').style.display='block';
+    document.getElementById('shopPanel').style.display='none';
+  }
+  // render history and seller tracking
+  renderHistory();
+  renderSellerOrders();
+}
+
+/* ============================
+   Create shop & add product
+   ============================ */
+document.getElementById('createShopBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('shopName').value.trim();
+  const desc = document.getElementById('shopDesc').value.trim();
+  if(!name){ alert('Masukkan nama toko'); return; }
+  const cur = getCurrentUser(); if(!cur){ alert('Mohon login terlebih dahulu'); return; }
+  cur.shop = { name, desc, products: [] };
+  saveUserChanges(cur);
+  alert('Toko berhasil dibuat');
+  loadProfileData();
+  renderCategoryButtons();
+});
+
+function renderMyShopProducts(){
+  const cur = getCurrentUser(); const container = document.getElementById('myShopProducts'); container.innerHTML = '';
+  if(!cur || !cur.shop) return;
+  const shopProds = cur.shop.products || [];
+  if(shopProds.length===0) container.innerHTML = '<p class="note">Belum ada produk di toko Anda.</p>';
+  shopProds.forEach(p=>{
+    const d = document.createElement('div'); d.className = 'shop-card';
+    d.innerHTML = `<strong>${escapeHtml(p.name)}</strong> <div class="note">Rp ${Number(p.price).toLocaleString()}</div><div class="note">${escapeHtml(p.desc||'')}</div><div class="note">Jenis: ${escapeHtml(p.category||'Lainnya')}</div><div class="note">📍 ${escapeHtml(p.location||'Lokasi belum diisi')}</div>`;
+    container.appendChild(d);
+  });
+}
+
+const newProdPhoto = document.getElementById('newProdPhoto');
+const newProdPhotoPreview = document.getElementById('newProdPhotoPreview');
+const newProdPhotoPreviewImg = document.getElementById('newProdPhotoPreviewImg');
+let newProductPhotoData = '';
+
+function resizeProductPhoto(file){
+  return new Promise((resolve,reject)=>{
+    if(!file || !file.type.startsWith('image/')){ reject(new Error('Pilih file foto dengan format gambar.')); return; }
+    if(file.size > 8 * 1024 * 1024){ reject(new Error('Ukuran foto maksimal 8 MB.')); return; }
+    const reader = new FileReader();
+    reader.onerror = ()=>reject(new Error('Foto tidak dapat dibaca.'));
+    reader.onload = ()=>{
+      const img = new Image();
+      img.onerror = ()=>reject(new Error('File foto tidak valid.'));
+      img.onload = ()=>{
+        const maxSide = 1000;
+        const scale = Math.min(1, maxSide / Math.max(img.width,img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/jpeg',0.78));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+newProdPhoto.addEventListener('change', async ()=>{
+  const file = newProdPhoto.files && newProdPhoto.files[0];
+  if(!file){ newProductPhotoData=''; newProdPhotoPreview.style.display='none'; return; }
+  try{
+    newProductPhotoData = await resizeProductPhoto(file);
+    newProdPhotoPreviewImg.src = newProductPhotoData;
+    newProdPhotoPreview.style.display = 'block';
+  }catch(err){
+    newProductPhotoData='';
+    newProdPhoto.value='';
+    newProdPhotoPreview.style.display='none';
+    alert(err.message);
+  }
+});
+
+document.getElementById('addProdBtn').addEventListener('click', ()=>{
+  const name = document.getElementById('newProdName').value.trim();
+  const price = Number(document.getElementById('newProdPrice').value);
+  const desc = document.getElementById('newProdDesc').value.trim();
+  const category = document.getElementById('newProdCategory').value;
+  const location = document.getElementById('newProdLocation').value.trim();
+  const stockInput = document.getElementById('newProdStock').value.trim();
+  if(!name || !Number.isFinite(price) || price <= 0){ alert('Masukkan nama barang dan harga yang valid.'); return; }
+  if(!category){ alert('Pilih kategori produk.'); return; }
+  if(category==='Peternakan' && /\b(babi|pork|anjing|dog|kucing|cat|ular|snake|katak|frog|buaya|crocodile)\b/i.test(name+' '+desc)){
+    alert('Produk tersebut tidak dapat dipasang. Kategori Peternakan hanya untuk produk hewan yang halal, seperti sapi, kambing, ayam, dan telur.'); return;
+  }
+  if(!location){ alert('Masukkan lokasi penjual, misalnya kecamatan atau kelurahan di Semarang.'); return; }
+  if(!newProductPhotoData){ alert('Unggah foto barang dagangan terlebih dahulu.'); return; }
+  const cur = getCurrentUser(); if(!cur || !cur.shop){ alert('Buat lapak terlebih dahulu.'); return; }
+  const newP = {
+    id:uid(), name, price, img:newProductPhotoData, desc,
+    owner:cur.email, category, location,
+    stock: stockInput === '' ? null : Math.max(0, Number(stockInput))
+  };
+  try{
+    cur.shop.products.push(newP);
+    saveUserChanges(cur);
+    products.push(newP);
+    saveProducts();
+  }catch(err){
+    alert('Produk belum dapat disimpan. Penyimpanan browser mungkin penuh; coba gunakan foto yang lebih kecil.');
+    return;
+  }
+  document.getElementById('newProdName').value='';
+  document.getElementById('newProdPrice').value='';
+  document.getElementById('newProdStock').value='';
+  document.getElementById('newProdDesc').value='';
+  document.getElementById('newProdLocation').value='';
+  newProdPhoto.value='';
+  newProductPhotoData='';
+  newProdPhotoPreview.style.display='none';
+  renderProducts(getActiveCategory(), searchInput.value.trim().toLowerCase());
+  renderMyShopProducts();
+  renderCategoryButtons();
+  alert('Dagangan berhasil ditambahkan dan ditampilkan di pasar!');
+});
+
+/* ============================
+   Profile tabs nav
+   ============================ */
+document.querySelectorAll('.profile-tabs button[data-tab]').forEach(btn=>btn.addEventListener('click', ()=>{
+  const active = getCurrentUser();
+  if(btn.dataset.tab === 'market' && (!active || active.role !== 'seller')){ alert('Kelola lapak hanya tersedia untuk akun penjual.'); return; }
+  document.querySelectorAll('.profile-tabs button[data-tab]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tabPanel').forEach(t=>t.style.display='none');
+  const tab=btn.getAttribute('data-tab');
+  document.getElementById('tab'+capitalize(tab)).style.display='block';
+  if(tab==='chat') renderChat();
+}));
+
+function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+/* ============================
+   Profile Cart view & checkout
+   ============================ */
+function renderProfileCart(){
+  const cdiv = document.getElementById('profileCartItems'); cdiv.innerHTML = '';
+  if(cart.length===0){ cdiv.innerHTML = '<p class="note">Keranjang kosong</p>'; return; }
+  cart.forEach(it=>{
+    const d = document.createElement('div'); d.className = 'cart-item';
+    d.innerHTML = `<span>${escapeHtml(it.name)} × ${Number(it.qty||1)}</span><span>Rp ${(Number(it.price)*Number(it.qty||1)).toLocaleString()}</span>`;
+    cdiv.appendChild(d);
+  });
+}
+
+/* ============================
+   Riwayat rendering
+   ============================ */
+function renderHistory(){
+  const cur = getCurrentUser();
+  const container = document.getElementById('historyList');
+  container.innerHTML = '';
+  if(!cur || !Array.isArray(cur.history) || cur.history.length === 0){
+    container.innerHTML = '<p class="note">Belum ada riwayat pembelian.</p>'; return;
+  }
+  cur.history.forEach(tx=>{
+    const el = document.createElement('div'); el.className='history-item';
+    const left = document.createElement('div'); left.className='left';
+    const itemsText = tx.items.map(it=>`${it.name} × ${Number(it.qty||1)}`).join(', ');
+    const status = tx.status || 'Diproses penjual';
+    left.innerHTML = `<div style="font-weight:700">${escapeHtml(itemsText)}</div>
+      <div class="note">Rp ${Number(tx.total).toLocaleString()} — ${escapeHtml(tx.method)} - ${escapeHtml(tx.provider)}</div>
+      <div class="note">${tx.fulfillment==='takeaway'?'Metode: Take Away · Lokasi: '+escapeHtml(tx.pickupPoint||'-'):'Ekspedisi: '+escapeHtml(tx.shipping||'-')} · Kode: ${escapeHtml(tx.id)}</div>
+      <div class="note">Tujuan: ${escapeHtml(tx.target)}</div>
+      <div class="note">Waktu: ${escapeHtml(tx.ts)}</div>
+      <div class="tracking-status">Status: ${escapeHtml(status)}</div>
+      <div class="note">Alur: Diproses penjual → Dikirim oleh tim ekspedisi → Selesai setelah Anda konfirmasi.</div>`;
+    const right = document.createElement('div'); right.innerHTML = `<div class="note">${tx.items.reduce((n,it)=>n+Number(it.qty||1),0)} barang</div>`;
+    if(status === 'Dikirim oleh tim ekspedisi'){
+      const confirm = document.createElement('button');
+      confirm.textContent = 'Konfirmasi diterima';
+      confirm.style.cssText='margin-top:8px;padding:8px 10px;border:0;border-radius:8px;background:#237a50;color:white;font-weight:700';
+      confirm.addEventListener('click',()=>confirmOrderReceived(tx.id));
+      right.appendChild(confirm);
+    }
+    el.appendChild(left); el.appendChild(right);
+    container.appendChild(el);
+  });
+}
+
+function updateOrderStatus(orderId, nextStatus){
+  const orders = JSON.parse(localStorage.getItem('ecolo_orders')||'[]');
+  const order = orders.find(o=>o.id===orderId);
+  const cur = getCurrentUser();
+  if(!order || !cur || cur.role!=='seller' || !order.items.some(i=>i.owner===cur.email)){ alert('Pesanan tidak ditemukan untuk lapak Anda.'); return; }
+  if(order.status==='Selesai' || nextStatus!=='Dikirim oleh tim ekspedisi') return;
+  order.status=nextStatus;
+  localStorage.setItem('ecolo_orders',JSON.stringify(orders));
+  const users=getUsers();
+  users.forEach(u=>{ if(u.email===order.buyerEmail){ u.history=(u.history||[]).map(t=>t.id===orderId?{...t,status:nextStatus}:t); } });
+  saveUsers(users);
+  renderSellerOrders();
+  alert('Status pesanan diperbarui.');
+}
+function confirmOrderReceived(orderId){
+  const orders=JSON.parse(localStorage.getItem('ecolo_orders')||'[]');
+  const order=orders.find(o=>o.id===orderId);
+  const cur=getCurrentUser();
+  if(!order || !cur || order.buyerEmail!==cur.email || order.status!=='Dikirim oleh tim ekspedisi'){ alert('Pesanan belum dapat dikonfirmasi.'); return; }
+  order.status='Selesai';
+  localStorage.setItem('ecolo_orders',JSON.stringify(orders));
+  cur.history=(cur.history||[]).map(t=>t.id===orderId?{...t,status:'Selesai'}:t);
+  saveUserChanges(cur);
+  renderHistory();
+  alert('Terima kasih! Pesanan ditandai selesai.');
+}
+function renderSellerOrders(){
+  const cur=getCurrentUser(), box=document.getElementById('sellerOrders');
+  if(!box) return;
+  box.innerHTML='';
+  if(!cur || cur.role!=='seller'){ box.innerHTML='<p class="note">Masuk sebagai penjual untuk melihat pesanan.</p>'; return; }
+  const orders=JSON.parse(localStorage.getItem('ecolo_orders')||'[]').filter(o=>o.items.some(i=>i.owner===cur.email));
+  if(!orders.length){ box.innerHTML='<p class="note">Belum ada pesanan untuk lapak Anda.</p>'; return; }
+  orders.forEach(o=>{
+    const el=document.createElement('div'); el.className='history-item';
+    const names=o.items.filter(i=>i.owner===cur.email).map(i=>`${i.name} × ${Number(i.qty||1)}`).join(', ');
+    const left=document.createElement('div'); left.className='left';
+    left.innerHTML=`<strong>${escapeHtml(names)}</strong><div class="note">Kode: ${escapeHtml(o.id)} · Pembeli: ${escapeHtml(o.buyerEmail)}</div><div class="note">${o.fulfillment==='takeaway'?'Take Away · Ambil di: '+escapeHtml(o.pickupPoint||'-'):'Ekspedisi: '+escapeHtml(o.shipping||'-')}</div><div class="tracking-status">Status: ${escapeHtml(o.status||'Diproses penjual')}</div>`;
+    const right=document.createElement('div');
+    if((o.status||'Diproses penjual')==='Diproses penjual'){
+      const b=document.createElement('button'); b.textContent='Tandai dikirim'; b.style.cssText='padding:8px 10px;border:0;border-radius:8px;background:#237a50;color:white;font-weight:700'; b.addEventListener('click',()=>updateOrderStatus(o.id,'Dikirim oleh tim ekspedisi')); right.appendChild(b);
+    } else if(o.status==='Dikirim oleh tim ekspedisi') right.textContent='Menunggu konfirmasi pembeli';
+    else right.textContent='Selesai';
+    el.append(left,right); box.appendChild(el);
+  });
+}
+
+
+/* ============================
+   Take-away toggle
+   ============================ */
+document.querySelectorAll('input[name="fulfillmentMode"]').forEach(radio=>{
+  radio.addEventListener('change',()=>{
+    const takeaway=radio.checked && radio.value==='takeaway';
+    if(!radio.checked) return;
+    document.getElementById('deliveryFields').style.display=takeaway?'none':'block';
+    document.getElementById('pickupFields').style.display=takeaway?'block':'none';
+  });
+});
+
+/* ============================
+   Prototype chat (browser-local)
+   ============================ */
+let activeChatEmail = '';
+function getChatMessages(){ return JSON.parse(localStorage.getItem('ecolo_messages')||'[]'); }
+function saveChatMessages(messages){ localStorage.setItem('ecolo_messages',JSON.stringify(messages)); }
+function openChatWith(email){
+  const cur=getCurrentUser();
+  if(!cur){ alert('Silakan login untuk menggunakan chat.'); openProfile(); return; }
+  if(!email || email===cur.email){ alert('Pilih akun lain untuk chat.'); return; }
+  activeChatEmail=email;
+  document.querySelectorAll('.profile-tabs button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab==='chat'));
+  document.querySelectorAll('.tabPanel').forEach(t=>t.style.display='none');
+  document.getElementById('tabChat').style.display='block';
+  renderChat();
+}
+function renderChatContacts(){
+  const cur=getCurrentUser(), box=document.getElementById('chatContacts');
+  if(!box) return;
+  box.innerHTML='';
+  if(!cur){box.innerHTML='<p class="note">Login untuk melihat kontak.</p>';return;}
+  const users=getUsers().filter(u=>u.email!==cur.email);
+  if(!users.length){box.innerHTML='<p class="note">Belum ada akun lain pada prototype ini.</p>';return;}
+  users.forEach(u=>{
+    const b=document.createElement('button');
+    b.className='chat-user'+(activeChatEmail===u.email?' active':'');
+    b.textContent=(u.name||u.email)+' · '+(u.role==='seller'?'Penjual':'Pembeli');
+    b.addEventListener('click',()=>{activeChatEmail=u.email;renderChat();});
+    box.appendChild(b);
+  });
+}
+function renderChat(){
+  const cur=getCurrentUser(), peer=getUsers().find(u=>u.email===activeChatEmail);
+  renderChatContacts();
+  const title=document.getElementById('chatWith'), messagesBox=document.getElementById('chatMessages');
+  const input=document.getElementById('chatInput'), send=document.getElementById('sendChatBtn');
+  if(!cur || !peer){
+    title.textContent='Pilih kontak untuk memulai chat';
+    messagesBox.innerHTML='<p class="note">Pilih kontak di sebelah kiri.</p>';
+    input.disabled=true;send.disabled=true;return;
+  }
+  title.textContent=(peer.name||peer.email)+' · '+(peer.role==='seller'?'Penjual':'Pembeli');
+  input.disabled=false;send.disabled=false;
+  const msgs=getChatMessages().filter(m=>(m.from===cur.email&&m.to===peer.email)||(m.from===peer.email&&m.to===cur.email));
+  messagesBox.innerHTML='';
+  if(!msgs.length) messagesBox.innerHTML='<p class="note">Belum ada pesan. Mulai percakapan!</p>';
+  msgs.forEach(m=>{
+    const bubble=document.createElement('div');bubble.className='chat-bubble'+(m.from===cur.email?' mine':'');
+    const body=document.createElement('span');body.textContent=m.text;
+    const meta=document.createElement('small');meta.textContent=(m.from===cur.email?'Anda':'Lawan bicara')+' · '+m.time;
+    bubble.append(body,meta);messagesBox.appendChild(bubble);
+  });
+  messagesBox.scrollTop=messagesBox.scrollHeight;
+}
+function sendChatMessage(){
+  const cur=getCurrentUser(), input=document.getElementById('chatInput'), value=input.value.trim();
+  if(!cur || !activeChatEmail || !value) return;
+  const messages=getChatMessages();
+  messages.push({id:uid(),from:cur.email,to:activeChatEmail,text:value,time:new Date().toLocaleString('id-ID',{timeZone:'Asia/Jakarta'})});
+  try{saveChatMessages(messages);}catch(e){alert('Pesan gagal disimpan.');return;}
+  input.value='';renderChat();
+}
+document.getElementById('sendChatBtn').addEventListener('click',sendChatMessage);
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChatMessage();});
+
+/* ============================
+   Sync & init
+   ============================ */
+function syncAfterAuthChange(){
+  const activeUser = getCurrentUser();
+  quickAddProductBtn.style.display = activeUser && activeUser.role === 'seller' ? 'inline-flex' : 'none';
+  document.querySelectorAll('.profile-tabs button[data-tab=\"market\"]').forEach(b=>b.style.display = activeUser && activeUser.role === 'seller' ? '' : 'none');
+  renderProducts(getActiveCategory(), searchInput.value.trim().toLowerCase());
+  renderCart();
+  loadProfileData();
+  renderProfileCart();
+  renderChatContacts();
+  renderCategoryButtons();
+  // ensure every user has favorites and history keys
+  const users = getUsers(); let changed=false;
+  users.forEach(u=>{ if(!Array.isArray(u.favorites)){ u.favorites = []; changed=true; } if(!Array.isArray(u.history)){ u.history=[]; changed=true; }});
+  if(changed) saveUsers(users);
+}
+
+/* ============================
+   Theme & search
+   ============================ */
+document.getElementById('themeBtn').addEventListener('click', ()=>{ document.body.classList.toggle('dark'); document.getElementById('themeBtn').textContent = document.body.classList.contains('dark')?"☀️":"🌙"; });
+
+searchInput.addEventListener('input', ()=> renderProducts(getActiveCategory(), searchInput.value.trim().toLowerCase()));
+
+function getActiveCategory(){
+  const active = document.querySelector('#categoryBtns button.active');
+  return active ? active.dataset.cat : 'Semua';
+}
+
+/* ============================
+   Boot
+   ============================ */
+renderCategoryButtons();
+renderProducts('Semua','');
+renderCart();
+syncAfterAuthChange();
+renderChatContacts();
+
+/* ============================
+   Small safety helpers
+   ============================ */
+(function ensureUserDefaults(){
+  const users = getUsers(); let changed=false;
+  users.forEach(u=>{ if(!Array.isArray(u.favorites)){ u.favorites=[]; changed=true } if(!Array.isArray(u.history)){ u.history=[]; changed=true } });
+  if(changed) saveUsers(users);
+})();
+
+/* ============================
+   End of script
+   ============================ */
+</script>
+</body>
+</html>
